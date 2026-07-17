@@ -180,8 +180,8 @@ not real citations; only the Apple *Te lucis* URL is real.)
 3. **Front matter key is `genre`, not `type`** — `type` is reserved by Hugo
    (it changes layout lookup). The brief's kicker `:: {type}` reads from
    `.Params.genre`, default `essay`.
-4. **X handle migration pending** (`heyn8k` → ?): update the link in
-   `content/_index.md` when it happens.
+4. **X handle migration done** (`njkdev`, 17 july 2026): link in
+   `content/_index.md` updated.
 5. `public/` is gitignored — deploys build fresh; don't commit build output.
 
 ## don'ts (decided; Brand Book is law)

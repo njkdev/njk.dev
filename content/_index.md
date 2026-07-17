@@ -9,8 +9,8 @@ now:
 links:
   - label: github.com/njk-dev
     url: https://github.com/njk-dev
-  - label: x.com/heyn8k
-    url: https://x.com/heyn8k
+  - label: x.com/njkdev
+    url: https://x.com/njkdev
   - label: glassdarkly.dev
     url: https://glassdarkly.dev
 # note: the layout renders front matter only — a markdown body below will not appear
