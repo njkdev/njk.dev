@@ -409,6 +409,30 @@ body {
   color: var(--ink-display);
 }
 
+/* the twin title (titleDark/titleLight in front matter): the dark page
+   keeps the hidden claim, the light page strikes it through and answers.
+   dark is the default — no [data-mode] — so the hidden span leads; the
+   swap rides the same attribute as the mode itself, OS or manual alike.
+   display (not visibility) keeps the inactive string out of copy/paste. */
+.post-title .title-seen { display: none; }
+[data-mode="light"] .post-title .title-hidden { display: none; }
+[data-mode="light"] .post-title .title-seen { display: inline; }
+
+/* the strike stays a hairline at title size — struck, not redacted */
+.post-title s {
+  text-decoration: line-through;
+  text-decoration-thickness: 1px;
+  text-decoration-color: var(--ink-muted);
+  text-decoration-color: color-mix(in srgb, currentColor 45%, transparent);
+}
+
+/* paper reads in the light: print gets the struck version — the complete
+   rendering of the idea — whatever mode the screen was in */
+@media print {
+  .post-title .title-hidden { display: none; }
+  .post-title .title-seen { display: inline; }
+}
+
 .dateline {
   margin-top: 16px;
   font-size: 0.75rem;

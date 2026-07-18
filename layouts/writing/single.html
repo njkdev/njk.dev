@@ -62,7 +62,19 @@
     </header>
 
     <div class="kicker">:: {{ .Params.genre | default "essay" }} · {{ if .Params.unlisted }}unlisted{{ else }}{{ .ReadingTime }} min{{ end }}</div>
+    {{- /* the twin title: one h1, two aria-hidden spans — the dark page keeps
+         the hidden claim, the light page shows the struck correction. .Title
+         stays the one canonical string (tab, og, feed, and the h1's spoken
+         name via aria-label); the swap is CSS-only so it works before JS and
+         follows the manual toggle. never announced, never explained. */}}
+    {{- with .Params.titleDark }}
+    <h1 class="post-title" aria-label="{{ $.Title }}">
+      <span class="title-hidden" aria-hidden="true">{{ . }}</span>
+      <span class="title-seen" aria-hidden="true">{{ $.Params.titleLight | default $.Title | safeHTML }}</span>
+    </h1>
+    {{- else }}
     <h1 class="post-title">{{ .Title }}</h1>
+    {{- end }}
     {{- /* the dateline: dd · roman-month · yyyy · {occasion or nothing} */}}
     {{ if .Date.IsZero }}{{ warnf "writing: %s has no date — the dateline will read 01 · i · 0001" .File.Path }}{{ end }}
     {{ $roman := index (slice "i" "ii" "iii" "iv" "v" "vi" "vii" "viii" "ix" "x" "xi" "xii") (sub (int .Date.Month) 1) }}
