@@ -190,6 +190,11 @@ not real citations; only the Apple *Te lucis* URL is real.)
   in `charbel/`, which stays untracked): `annaya-tomb-leo-xiv.jpg` (pl. i),
   `hermitage-cell.jpg` (pl. ii), `charbel-portrait.jpg` (pl. iii),
   `annaya-pilgrimage-road.jpg` (pl. iv).
+- `plate.html` grew an optional `frame="portrait"` (any other value is a
+  build error): the image hangs matted — natural aspect, `max-height`
+  420px, centered on the recessed ground — instead of full-bleed width,
+  so tall images don't tower on phones. pl. ii and pl. iii wear it;
+  landscape plates are untouched.
 - All three footnote URLs verified live 18 july 2026 (two vatican.va; the
   CNA/NCRegister pilgrimage piece is from 24 july 2024).
 

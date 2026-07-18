@@ -5,10 +5,14 @@
 {{- $src := .Get "src" -}}
 {{- $caption := .Get "caption" -}}
 {{- $n := .Get "n" -}}
+{{- $frame := .Get "frame" -}}
 {{- if not $src }}{{ errorf "plate: no image without a word — src is required (%s)" .Position }}{{ end -}}
 {{- if not $caption }}{{ errorf "plate: no image without a word — caption is required (%s)" .Position }}{{ end -}}
 {{- if not $n }}{{ errorf "plate: plates number per essay in roman — n is required (%s)" .Position }}{{ end -}}
-<figure class="plate">
+{{- /* tall images hang matted (frame="portrait"): capped height, centered
+     on the recessed ground — a phone never scrolls a tower */ -}}
+{{- if and $frame (ne $frame "portrait") }}{{ errorf "plate: unknown frame %q — a plate hangs full-width or portrait (%s)" $frame .Position }}{{ end -}}
+<figure class="plate{{ if eq $frame `portrait` }} plate-portrait{{ end }}">
   <img src="{{ $src }}" alt="{{ .Get "alt" | default $caption }}" loading="lazy">
   <figcaption>
     <span class="plate-caption">{{ $caption }}</span>

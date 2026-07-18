@@ -40,7 +40,7 @@ For twenty-three years as a hermit, Charbel slept five hours a night on a mat wi
 
 {{< plate src="/plates/hermitage-cell.jpg"
     alt="The hermit's cell at Annaya: a thin dark mat on a stone floor with a wooden log at its head, a cross and a framed icon on the plaster wall, a lantern hanging from the ceiling"
-    caption="the hermit's cell: a mat, a wooden log for a pillow" n="ii" >}}
+    caption="the hermit's cell: a mat, a wooden log for a pillow" n="ii" frame="portrait" >}}
 
 ## the light
 
@@ -50,7 +50,7 @@ Immediately after Charbel was laid to rest, locals began reporting a brilliant l
 
 {{< plate src="/plates/charbel-portrait.jpg"
     alt="Sepia portrait of Saint Charbel Makhlouf: an elderly monk in a black hood with a full white beard, his eyes cast down"
-    caption="saint charbel makhlouf" n="iii" >}}
+    caption="saint charbel makhlouf" n="iii" frame="portrait" >}}
 
 It is said that no one saw Saint Charbel's face fully during his lifetime, for he kept his eyes fixed on the ground except before the Eucharist and the Tabernacle. When he was found after entrusting his soul to God, his eyes were fixed upward, toward heaven, toward Christ. The light of God, seen through Saint Charbel's life and in his death, directs us toward God.
 

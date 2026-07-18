@@ -526,6 +526,16 @@ body {
   height: auto;
 }
 
+/* portrait plates (frame="portrait"): the tall image hangs matted —
+   natural aspect, capped height, centered on the recessed ground —
+   instead of running full-bleed into a phone-height tower */
+.plate-portrait img {
+  width: auto;
+  max-width: 100%;
+  max-height: 420px;
+  margin: 0 auto;
+}
+
 .plate figcaption {
   display: flex;
   justify-content: space-between;
