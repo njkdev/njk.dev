@@ -7,8 +7,8 @@ now:
   - reading [a history of christendom](https://en.wikipedia.org/wiki/Warren_H._Carroll)
   - learning [nushell](https://www.nushell.sh/)
 links:
-  - label: github.com/njk-dev
-    url: https://github.com/njk-dev
+  - label: github.com/njkdev
+    url: https://github.com/njkdev
   - label: x.com/njkdev
     url: https://x.com/njkdev
   - label: glassdarkly.dev
