@@ -1,25 +1,113 @@
 # njk.dev
 
-Read `WHERE-WE-STAND.md` before changing anything — it's the catch-up brief:
-current state, how v2 (the writing room) and v3 (media plates) were
-implemented, and the live flags (e.g. the commented-out "set in berkeley
-mono" colophon line, the first essay being live-but-unlisted, the `build:`
-vs `_build:` Hugo rename).
+Hugo site, no theme, layouts at project level, one stylesheet. No build
+toolchain — no npm, no SCSS, no Hugo Pipes — and Hugo *extended* is not
+required.
 
-The law lives in the owner's design handoff (currently `~/Downloads/handoff 2/`,
-the v3 drop — it supersedes `~/Downloads/handoff/`): `BUILD BRIEF.md` (spec),
-`njk Brand Book.dc.html` (identity), `tokens.css` (pinned values — never edit
-tokens in `static/css/style.css`, they're copied verbatim from there).
+Everything below was verified against the code on 24 July 2026. Where a line
+is a taste decision rather than a fact about the build, it says so.
 
-On that word "law": hold it lightly. The Brand Book and these guidelines are
-the starting railings for a Claude picking this up — a considered default that
-keeps changes in key — not a faceless dictator of what can and can't be. njk
-has the final say, always. The site's in a bit of transition, so when the owner
-asks for something the rules didn't foresee — a second typeface, say — that's
-not a fight with the Brand Book: the answer is yes, and the guidelines get
-updated to match. Railings to start from, not a fence to be trapped behind.
+## Running it
 
-Hugo, no theme, layouts at project level. Verify with a plain
-`hugo --destination /tmp/njk-build` — it must stay clean, include the first
-essay (it publishes via `publishDate`), and never emit drafts; add `-D -F`
-only when working on new draft pieces.
+```
+hugo server                          # preview; toggle modes via the footer moon/sun
+hugo --destination /tmp/njk-build    # verify a clean build
+```
+
+`brew install hugo` if it isn't present. The site needs ≥0.145 for the `build:`
+front-matter key; it runs on **0.164.0**, and Homebrew currently ships exactly
+that, so a local build matches CI without pinning anything.
+
+**Deploy:** Cloudflare Pages builds from `origin/main`, pinning `HUGO_VERSION`
+to **0.164.0** as a dashboard environment variable (site rebuilt there the week
+of 20 July 2026). The dashboard holds that value, not this repo — if a local
+build ever disagrees with the deployed site, check the pin first.
+`public/` and `resources/` are gitignored; deploys build fresh.
+
+Verified 24 July 2026 on 0.164.0: builds clean, the essay renders, and it stays
+out of `sitemap.xml` and `writing/index.xml` as intended.
+
+## Things that will fail the build
+
+Hard `errorf` guards, not preferences. A small edit can trip them.
+
+- **`folio`** (`layouts/writing/single.html:56-63`) — a *listed* post needs a
+  folio that is an arabic number. Missing or non-numeric (`folio: iii`) is a
+  build error. Unlisted posts skip the check. A missing `date` only warns.
+- **`plate`** (`layouts/shortcodes/plate.html:9-14`) — `src`, `caption` and `n`
+  are all required; `frame` accepts only `portrait`.
+- **`music` / `video`** — same shape: caption and number required, and they
+  reject embed URLs in favour of ordinary page URLs.
+
+## Front matter
+
+- **`genre`, not `type`.** Hugo reserves `type` — it changes layout lookup.
+  The kicker reads `.Params.genre`, defaulting to `essay` (`single.html:68`).
+- **Unlisted posts need both flags:** `unlisted: true` *and* `build:` →
+  `list: never` (no underscore — Hugo renamed `_build:` in 0.145). Together
+  they drive `noindex`, a suppressed canonical, the `unpaginated` folio, the
+  `· unlisted` kicker, no prev/next, and the closing line. To list a post
+  later, remove both flags **and** assign a folio, or the build errors.
+- `hugo new content writing/a-title.md` scaffolds from `archetypes/writing.md`.
+- The `:: now` line on the home page is front matter in `content/_index.md`;
+  the layout renders it, so a markdown body there will not appear.
+
+## CSS
+
+`static/css/style.css` is the only stylesheet.
+
+- The **token block** near the top is copied verbatim from the design
+  handoff's `tokens.css`. Editing values there puts the site out of sync with
+  that source. `--font-serif` (`:68-72`) is a deliberate local addition
+  sitting *outside* the block, with a comment saying so — it is not a handoff
+  token and shouldn't be folded in.
+- **`.prose` is serif; the apparatus is mono.** Anything apparatus-like added
+  inside `.prose` needs `font-family: var(--font-mono)` re-asserted — see the
+  existing cases at `:492` (h2), `:523` (cite), `:541` (plate), `:665`
+  (footnotes).
+- **Accent colour flows from `--acc`.** `.page-writing` sets it to violet
+  (`:416`); mark tint, hovers and focus rings follow automatically. Hand-setting
+  a per-element accent is how that comes apart.
+
+## Wiring worth knowing
+
+- `head-common` is included **before** `mode-init` in all four templates —
+  mode-init mutates the theme-color meta that head-common emits.
+- `music-player.html` is included only via `{{ if .HasShortcode "music" }}`
+  (`single.html:106`). A new single template would need to repeat that, or
+  music plates degrade to plain provider links.
+- **`music` and `video` are dormant** — complete, guarded, with live CSS, but
+  no current essay uses them. `plate` is the only shortcode in use (4 calls in
+  the one essay).
+- The feed is a project-level `layouts/_default/rss.xml` replacing Hugo's
+  embedded template, which ships an invalid empty `<lastBuildDate/>`. It
+  currently renders an item-empty channel because the only post is unlisted
+  and so excluded from `.RegularPages` — that is expected, and the `with`
+  guard is what keeps the empty case valid XML.
+- Goldmark: `unsafe = true`, block attributes on, and **typographer off on
+  purpose** — the design sets straight quotes throughout; enabling it silently
+  curls every apostrophe in the prose.
+- `static/favicon.ico` is referenced by no markup. It is served at
+  `/favicon.ico`, which is the path legacy agents request implicitly.
+
+## Held
+
+Three `set in berkeley mono · handmade` colophon lines are commented out
+(`index.html:78`, `writing/single.html:99`, `writing/list.html:57`) pending a
+web font licence. `--font-mono` already leads with Berkeley and degrades
+correctly; the `.colophon-note` CSS exists, unused.
+
+## Design source
+
+The handoff — `BUILD BRIEF.md`, `njk Brand Book.dc.html`, `tokens.css` — is
+archived at:
+
+```
+~/Library/Mobile Documents/com~apple~CloudDocs/Ark/handoff 2/
+```
+
+**A revised style book is in progress.** Treat the archived handoff as
+background rather than current instruction. Where a request conflicts with it,
+ask instead of assuming the older document wins — njk has the final say. The
+narrative of how the site was built through July 2026 is archived at
+`~/Developer/review/njk.dev/` if it's ever needed.
