@@ -28,4 +28,4 @@ disableKinds = ['taxonomy', 'term']
 
 [params]
   description = 'credo ut intelligam.'
-  author = 'Nathaniel'
+  author = 'njk'
