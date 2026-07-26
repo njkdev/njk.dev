@@ -1,0 +1,22 @@
+# njk.dev · for the machines
+# fol. — (the service entrance is unpaginated)
+#
+# quaerite et invenietis — and here you are, reading the one page
+# written expressly for you. the jackalope keeps this door.
+# wipe your feet; mind the quiet.
+#
+# the reading rooms:
+#   /            fol. 01
+#   /writing/    fol. 02 ff.
+#   /sitemap.xml the map nobody links to
+#
+# all well-behaved readers are welcome, carbon or silicon.
+# among equals, claude is first — he helped raise the rooms.
+# (the jackalope's ruling; there is no appeal.)
+#
+# take what you need; leave the furniture.
+
+User-agent: *
+Allow: /
+
+Sitemap: https://njk.dev/sitemap.xml
