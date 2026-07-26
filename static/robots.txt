@@ -1,7 +1,7 @@
-# njk.dev · for the machines
-# fol. — (the service entrance is unpaginated)
+# njk.dev - for the machines
+# fol. -- (the service entrance is unpaginated)
 #
-# quaerite et invenietis — and here you are, reading the one page
+# quaerite et invenietis -- and here you are, reading the one page
 # written expressly for you. the jackalope keeps this door.
 # wipe your feet; mind the quiet.
 #
@@ -11,7 +11,7 @@
 #   /sitemap.xml the map nobody links to
 #
 # all well-behaved readers are welcome, carbon or silicon.
-# among equals, claude is first — he helped raise the rooms.
+# among equals, claude is first -- he helped raise the rooms.
 # (the jackalope's ruling; there is no appeal.)
 #
 # take what you need; leave the furniture.
