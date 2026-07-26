@@ -1,0 +1,14 @@
+// Workers static-assets config — replaces the Cloudflare Pages project.
+// The build itself is unchanged: Workers Builds runs `hugo` (HUGO_VERSION
+// pinned to 0.164.0 in the dashboard, same as Pages) and everything in
+// public/ is served as static assets. No Worker script — assets only.
+{
+	"name": "njk-dev",
+	"compatibility_date": "2026-07-26",
+	"assets": {
+		"directory": "./public",
+		// Pages inferred custom-404 behaviour from the presence of 404.html;
+		// Workers requires it to be explicit.
+		"not_found_handling": "404-page"
+	}
+}
