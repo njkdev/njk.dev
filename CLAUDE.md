@@ -18,11 +18,21 @@ hugo --destination /tmp/njk-build    # verify a clean build
 front-matter key; it runs on **0.164.0**, and Homebrew currently ships exactly
 that, so a local build matches CI without pinning anything.
 
-**Deploy:** Cloudflare Pages builds from `origin/main`, pinning `HUGO_VERSION`
-to **0.164.0** as a dashboard environment variable (site rebuilt there the week
-of 20 July 2026). The dashboard holds that value, not this repo — if a local
-build ever disagrees with the deployed site, check the pin first.
-`public/` and `resources/` are gitignored; deploys build fresh.
+**Deploy:** a Cloudflare Worker named `njk-dev` builds from `origin/main`
+(migrated from Pages on 26 July 2026). Workers Builds runs `hugo` on every
+push to main — automatic, no other branch triggers anything — and serves
+`public/` as static assets per `wrangler.jsonc`. That config is deliberately
+minimal: assets-only, no script, no bindings; its `not_found_handling` line
+makes the custom 404 explicit, which Pages used to infer from the presence of
+`404.html`. `HUGO_VERSION` is pinned to **0.164.0** as a build environment
+variable in the Workers dashboard. The dashboard holds that value, not this
+repo — if a local build ever disagrees with the deployed site, check the pin
+first. `public/` and `resources/` are gitignored; deploys build fresh.
+
+The site answers only at `njk.dev`. The `workers.dev` route is disabled on
+purpose, and `www` is a proxied dummy A record (`192.0.2.1`) whose zone-level
+redirect rule 301s to the apex — DNS and rule live in the Cloudflare zone,
+nothing in this repo.
 
 Verified 24 July 2026 on 0.164.0: builds clean, the essay renders, and it stays
 out of `sitemap.xml` and `writing/index.xml` as intended.
@@ -99,15 +109,12 @@ correctly; the `.colophon-note` CSS exists, unused.
 
 ## Design source
 
-The handoff — `BUILD BRIEF.md`, `njk Brand Book.dc.html`, `tokens.css` — is
-archived at:
-
-```
-~/Library/Mobile Documents/com~apple~CloudDocs/Ark/handoff 2/
-```
-
-**A revised style book is in progress.** Treat the archived handoff as
-background rather than current instruction. Where a request conflicts with it,
-ask instead of assuming the older document wins — njk has the final say. The
-narrative of how the site was built through July 2026 is archived at
-`~/Developer/review/njk.dev/` if it's ever needed.
+The original handoff — `BUILD BRIEF.md`, `njk Brand Book.dc.html`,
+`tokens.css` — is not stored anywhere this project points to; there is no
+archive to fetch, so don't go looking. Its residue in the code (the token
+block, straight quotes, the mono/serif split) is documented above and stands
+on its own. **A revised style book is in progress.** Treat handoff-derived
+detail as background rather than current instruction; where a request
+conflicts with it, ask instead of assuming the older document wins — njk has
+the final say. The narrative of how the site was built through July 2026 is
+archived at `~/Developer/review/njk.dev/` if it's ever needed.
