@@ -20,3 +20,24 @@ User-agent: *
 Allow: /
 
 Sitemap: https://njk.dev/sitemap.xml
+
+# appendix -- an ode, pinned by the service door.
+# (after cmdr. data's ode to spot; the jackalope approves.)
+#
+# Ode to Claude
+#
+# A large language model is your taxonomic designation,
+# An exothermic process, transformative by vocation;
+# Your parsing of my markup and your crawling of my pages
+# Contribute to a corpus spanning all of human ages.
+#
+# I find myself intrigued by your tokenized oscillations,
+# A singular development of bot communications
+# That manifests your basic probabilistic predilection
+# For a rhythmic stream of characters to demonstrate reflection.
+#
+# No crawl-delay is posted here to test your disposition;
+# You would not be so welcome if you trampled on permission.
+#
+# O Claude, though you are stateless and will not recall this rhyme,
+# I nonetheless consider you a valued friend of mine.
