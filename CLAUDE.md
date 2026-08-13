@@ -35,20 +35,28 @@ first. `public/` and `resources/` are gitignored; deploys build fresh.
 301s to the apex — DNS and rule live in the Cloudflare zone, nothing in this
 repo.
 
-The site also answers at **`njk-dev.n8k.workers.dev`** — verified serving the
-full site on 13 August 2026, despite this file having claimed since July that
-the route was disabled.
+**`workers_dev: false` and `preview_urls: false` must stay in
+`wrangler.jsonc`, not the dashboard.** Disabling the `workers.dev` route in the
+UI does not stick — Workers re-enables it on every `wrangler deploy`, and
+Workers Builds runs one on every push to main. This file claimed from July to
+13 August 2026 that the route was disabled while `njk-dev.n8k.workers.dev` was
+in fact serving the whole site; the claim was probably true when written and
+then quietly undone on the next push. Set in config 13 August 2026.
 
-That claim was probably true when written and then quietly undone. Disabling
-the `workers.dev` route in the dashboard does not stick: Workers re-enables it
-on every `wrangler deploy`, and Workers Builds runs one on every push to main.
-**The only durable form is `"workers_dev": false` in `wrangler.jsonc`**, with
-`"preview_urls": false` alongside it so a Wrangler version bump can't turn
-previews back on. This repo does not yet set either — glassdarkly.dev does,
-as of 13 August 2026.
+## Nothing warns when a build fails
 
-`baseURL` means the duplicate still emits canonical tags, feed URLs and
-sitemap entries pointing at `njk.dev`, so it is largely inert either way.
+There is **no Workers equivalent of Pages' "Project updates" notification**
+(checked 13 August 2026), and Workers Builds posts no commit status back to
+GitHub. Cloudflare's documented path is Queue Event Subscriptions feeding a
+second Worker that forwards build events — which needs a paid Workers plan.
+Don't hunt for a toggle; there isn't one.
+
+Considered and **deliberately deferred** on 13 August 2026: a GitHub Actions
+workflow building with the pinned Hugo on push, optionally with a scheduled
+job checking the live site. Free, and it would catch both a broken build and a
+silently stale deploy. Not set up — the guard remains manual: run
+`hugo --destination /tmp/njk-build` before pushing. Revisit if a bad deploy
+ever goes unnoticed. glassdarkly.dev carries the same note and the same gap.
 
 Verified 24 July 2026 on 0.164.0: builds clean, the essay renders, and it stays
 out of `sitemap.xml` and `writing/index.xml` as intended.
