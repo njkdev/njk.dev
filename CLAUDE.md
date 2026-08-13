@@ -31,10 +31,17 @@ variable in the Workers dashboard. The dashboard holds that value, not this
 repo — if a local build ever disagrees with the deployed site, check the pin
 first. `public/` and `resources/` are gitignored; deploys build fresh.
 
-The site answers only at `njk.dev`. The `workers.dev` route is disabled on
-purpose, and `www` is a proxied dummy A record (`192.0.2.1`) whose zone-level
-redirect rule 301s to the apex — DNS and rule live in the Cloudflare zone,
-nothing in this repo.
+`www` is a proxied dummy A record (`192.0.2.1`) whose zone-level redirect rule
+301s to the apex — DNS and rule live in the Cloudflare zone, nothing in this
+repo.
+
+The site also answers at **`njk-dev.n8k.workers.dev`**, which Workers enables
+by default on deploy. An earlier version of this file claimed that route was
+disabled; it never was — verified serving the full site on 13 August 2026.
+`baseURL` means that copy still emits canonical tags, feed URLs and sitemap
+entries pointing at `njk.dev`, so the duplicate is largely inert, but the
+route is a second front door and can be turned off under
+**Settings → Domains & Routes**.
 
 Verified 24 July 2026 on 0.164.0: builds clean, the essay renders, and it stays
 out of `sitemap.xml` and `writing/index.xml` as intended.
