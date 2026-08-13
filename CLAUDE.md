@@ -15,8 +15,10 @@ hugo --destination /tmp/njk-build    # verify a clean build
 ```
 
 `brew install hugo` if it isn't present. The site needs ≥0.145 for the `build:`
-front-matter key; it runs on **0.164.0**, and Homebrew currently ships exactly
-that, so a local build matches CI without pinning anything.
+front-matter key. CI pins **0.164.0** (see Deploy below), but Homebrew now
+ships **0.165.0** — as of 13 August 2026 a local build no longer matches CI.
+Nothing warns about the gap; it has caused no trouble so far, but check the
+pin before blaming a local/deployed discrepancy on anything else.
 
 **Deploy:** a Cloudflare Worker named `njk-dev` builds from `origin/main`
 (migrated from Pages on 26 July 2026). Workers Builds runs `hugo` on every
