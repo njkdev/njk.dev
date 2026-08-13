@@ -51,12 +51,21 @@ GitHub. Cloudflare's documented path is Queue Event Subscriptions feeding a
 second Worker that forwards build events — which needs a paid Workers plan.
 Don't hunt for a toggle; there isn't one.
 
+Both guards are **manual — nothing runs them for you**:
+
+```
+hugo --destination /tmp/njk-build                    # before pushing
+nu ~/Developer/jackaloop/thump.nu njk.dev --expect-workers   # after
+```
+
+The first catches a build that would break; the second catches a deploy that
+landed wrong — canonical url, every page in `sitemap.xml`, the custom 404, and
+whether Workers or Pages is answering. `thump.nu` exits non-zero on failure.
+
 Considered and **deliberately deferred** on 13 August 2026: a GitHub Actions
-workflow building with the pinned Hugo on push, optionally with a scheduled
-job checking the live site. Free, and it would catch both a broken build and a
-silently stale deploy. Not set up — the guard remains manual: run
-`hugo --destination /tmp/njk-build` before pushing. Revisit if a bad deploy
-ever goes unnoticed. glassdarkly.dev carries the same note and the same gap.
+workflow running both on push, which would make them automatic rather than
+remembered. Free. Not set up; revisit if a bad deploy ever goes unnoticed.
+glassdarkly.dev carries the same note and the same gap.
 
 Verified 24 July 2026 on 0.164.0: builds clean, the essay renders, and it stays
 out of `sitemap.xml` and `writing/index.xml` as intended.
