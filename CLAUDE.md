@@ -35,13 +35,20 @@ first. `public/` and `resources/` are gitignored; deploys build fresh.
 301s to the apex — DNS and rule live in the Cloudflare zone, nothing in this
 repo.
 
-The site also answers at **`njk-dev.n8k.workers.dev`**, which Workers enables
-by default on deploy. An earlier version of this file claimed that route was
-disabled; it never was — verified serving the full site on 13 August 2026.
-`baseURL` means that copy still emits canonical tags, feed URLs and sitemap
-entries pointing at `njk.dev`, so the duplicate is largely inert, but the
-route is a second front door and can be turned off under
-**Settings → Domains & Routes**.
+The site also answers at **`njk-dev.n8k.workers.dev`** — verified serving the
+full site on 13 August 2026, despite this file having claimed since July that
+the route was disabled.
+
+That claim was probably true when written and then quietly undone. Disabling
+the `workers.dev` route in the dashboard does not stick: Workers re-enables it
+on every `wrangler deploy`, and Workers Builds runs one on every push to main.
+**The only durable form is `"workers_dev": false` in `wrangler.jsonc`**, with
+`"preview_urls": false` alongside it so a Wrangler version bump can't turn
+previews back on. This repo does not yet set either — glassdarkly.dev does,
+as of 13 August 2026.
+
+`baseURL` means the duplicate still emits canonical tags, feed URLs and
+sitemap entries pointing at `njk.dev`, so it is largely inert either way.
 
 Verified 24 July 2026 on 0.164.0: builds clean, the essay renders, and it stays
 out of `sitemap.xml` and `writing/index.xml` as intended.
