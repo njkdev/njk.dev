@@ -31,9 +31,33 @@ variable in the Workers dashboard. The dashboard holds that value, not this
 repo — if a local build ever disagrees with the deployed site, check the pin
 first. `public/` and `resources/` are gitignored; deploys build fresh.
 
-`www` is a proxied dummy A record (`192.0.2.1`) whose zone-level redirect rule
-301s to the apex — DNS and rule live in the Cloudflare zone, nothing in this
-repo.
+`www` is a proxied dummy A record (`192.0.2.1`) whose zone-level **Single
+Redirect** 301s to the apex, path and query preserved — DNS and rule live in the
+Cloudflare zone, nothing in this repo.
+
+That was a legacy **Page Rule** until **14 August 2026**
+(`https://www.njk.dev/*` → `https://njk.dev/$1`). It is now a Single Redirect
+under **Rules → Redirect Rules**, matching `(http.host eq "www.njk.dev")` —
+hostname only, no scheme. Two reasons for the move: Cloudflare is retiring Page
+Rules, and a scheme-specific pattern makes `Always Use HTTPS` load-bearing
+rather than a nicety, since a plain `http://www` request misses the rule and
+hangs against the unroutable address. The Page Rule was deleted only after the
+replacement was verified on all four axes (both schemes, deep path, query
+string); the zone now has **zero** Page Rules.
+
+**Zone settings were normalised 14 August 2026** across all four zones so they
+are identical. Two goals: Cloudflare injects **no JavaScript**, and friendly
+crawlers get through unchallenged. Off here: Rocket Loader, Email Obfuscation,
+bot-detection JS (`enable_js`, which *was* on for this zone), the Web Analytics
+beacon, Server-Side Excludes, Browser Integrity Check, Bot Fight Mode, every
+AI/crawler block, Cloudflare's managed robots.txt, Hotlink Protection (also
+previously on), Security Level `essentially_off`. On: HSTS
+(`max-age=15552000`, `includeSubDomains`, **no preload**), `nosniff`, Always Use
+HTTPS, SSL Full (strict), **minimum TLS 1.2** — lowered from 1.3 so 1.2-only
+crawlers can still connect — plus TLS 1.3, HTTP/2, HTTP/3, Brotli, Early Hints.
+The full rationale, including why preload and a 1.3 floor were deliberately
+*not* taken, is recorded once in `~/Developer/njk.ing/CLAUDE.md`. Change it there
+and here together, or the two drift.
 
 **`workers_dev: false` and `preview_urls: false` must stay in
 `wrangler.jsonc`, not the dashboard.** Disabling the `workers.dev` route in the
